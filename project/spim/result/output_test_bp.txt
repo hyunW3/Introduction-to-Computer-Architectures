@@ -1,0 +1,6 @@
+Loaded: ../CPU/exceptions.s
+Number of Cycle : 67
+Number of Data Hazard : 0
+Number of Data Forwarding : 0
+Number of Stall by Data Hazard : 0
+Number of Stall by Branch (Jump) : 0

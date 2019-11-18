@@ -229,7 +229,6 @@ run_spim (mem_addr initial_PC, int steps_to_run, bool display)
       force_break = false;
       for (step = 0; step < step_size; step += 1)
 	{
-		
 	  if (force_break)
 	    {
               return true;
@@ -287,10 +286,9 @@ run_spim (mem_addr initial_PC, int steps_to_run, bool display)
 #endif
 
 	  DO_DELAYED_UPDATE ();
-	  
+
 	  switch (OPCODE (inst))
 	    {
-
 	    case Y_ADD_OP:
 	      {
 		reg_word vs = R[RS (inst)], vt = R[RT (inst)];
@@ -1097,7 +1095,6 @@ run_spim (mem_addr initial_PC, int steps_to_run, bool display)
 		  }
 #endif
 		set_mem_word (addr & 0xfffffffc, data);
-
 		break;
 	      }
 
@@ -1106,7 +1103,6 @@ run_spim (mem_addr initial_PC, int steps_to_run, bool display)
 
 	    case Y_SYSCALL_OP:
 	      if (!do_syscall ()){
-	      	n_cycle--; // hyun
 			print_result(n_cycle, n_datah, n_dataf, n_dstall, n_bstall);
 			return false;
 		  }
@@ -1642,7 +1638,6 @@ run_spim (mem_addr initial_PC, int steps_to_run, bool display)
 
 	  /* After instruction executes: */
 	  PC += BYTES_PER_WORD;
-	  n_cycle++; // hyun
 
 	  if (exception_occurred)
 	    {
@@ -1654,7 +1649,7 @@ run_spim (mem_addr initial_PC, int steps_to_run, bool display)
   /* Executed enought steps, return, but are able to continue. */
   return true;
 }
-// run_spim end
+
 
 #ifdef _WIN32
 void CALLBACK
