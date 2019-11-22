@@ -184,16 +184,64 @@ static int running_in_delay_slot = 0;
    STEPS_TO_RUN instruction executions.  If flag DISPLAY is true, print
    each instruction before it executes. Return true if program's
    execution can continue. */
-
+/*
+struct pipe_reg
+{
+	// IF/ID buff
+	int IF_RS; 
+	int IF_RT;
+	int IF_RD;
+	// ID/EX buff
+	int ID_RS; 
+	int ID_RT;
+	int ID_RD;
+	// EX/MEM buff
+	int EX_RS; 
+	int EX_RT;
+	int EX_RD;
+	// MEM/WB buff
+	int MEM_RS; 
+	int MEM_RT;
+	int MEM_RD;
+};
+*/
+int check_data_f(instruction *inst, instruction *inst_prev1,instruction *inst_prev2){
+	int count=0;
+	if(inst_prev2 != NULL){
+	    if( RD(inst_prev2) ==  RS(inst)){
+	      	//forwarding prev2 RD to RS
+	      	//R[RS(inst)] = R[RD(inst_prev2)];
+	      	count++;
+		} else if(RD(inst_prev2) ==  RT(inst)){
+	  	  //forwarding prev2 RD to RT
+	  	 	//R[RT(inst)] = R[RD(inst_prev2)];
+	  	 	count++;
+		}
+	}
+	if(inst_prev1 != NULL){
+	    if( RD(inst_prev1) ==  RS(inst)){
+	      	//forwarding prev2 RD to RS
+	      	//R[RS(inst)] = R[RD(inst_prev2)];
+	      	count++;
+	    } else if(RD(inst_prev1) ==  RT(inst)){
+	      	//forwarding prev2 RD to RT
+	      	//R[RT(inst)] = R[RD(inst_prev2)];
+	      	count++;
+	    }
+	}
+	return count;
+}
 bool
 run_spim (mem_addr initial_PC, int steps_to_run, bool display)
 {
   instruction *inst;
+  instruction *inst_prev1;
+  instruction *inst_prev2;
   static reg_word *delayed_load_addr1 = NULL, delayed_load_value1;
   static reg_word *delayed_load_addr2 = NULL, delayed_load_value2;
   int step, step_size, next_step;
   int n_cycle = 0, n_datah = 0, n_dataf = 0, n_dstall = 0, n_bstall = 0;
-
+  int rs,rt,rd;
   PC = initial_PC;
   if (!bare_machine && mapped_io)
     next_step = IO_INTERVAL;
@@ -260,6 +308,10 @@ run_spim (mem_addr initial_PC, int steps_to_run, bool display)
 
 	  exception_occurred = 0;
 	  inst = read_mem_inst (PC);
+	  inst_prev1 = read_mem_inst (PC-BYTES_PER_WORD); // if no, become NULL
+	  inst_prev2 = read_mem_inst (PC-(BYTES_PER_WORD*2));
+
+	  
 	  if (exception_occurred) /* In reading instruction */
 	    {
 	      exception_occurred = 0;
@@ -291,8 +343,10 @@ run_spim (mem_addr initial_PC, int steps_to_run, bool display)
 	  switch (OPCODE (inst))
 	    {
 
-	    case Y_ADD_OP:
+	    case Y_ADD_OP: // ADD
 	      {
+	    data_f += check_data_f(inst,inst_prev1,inst_prev2);
+
 		reg_word vs = R[RS (inst)], vt = R[RT (inst)];
 		reg_word sum = vs + vt;
 
@@ -302,8 +356,9 @@ run_spim (mem_addr initial_PC, int steps_to_run, bool display)
 		break;
 	      }
 
-	    case Y_ADDI_OP:
+	    case Y_ADDI_OP: //ADDI
 	      {
+	    data_f += check_data_f(inst,inst_prev1,inst_prev2);
 		reg_word vs = R[RS (inst)], imm = (short) IMM (inst);
 		reg_word sum = vs + imm;
 
@@ -321,11 +376,13 @@ run_spim (mem_addr initial_PC, int steps_to_run, bool display)
 	      R[RD (inst)] = R[RS (inst)] + R[RT (inst)];
 	      break;
 
-	    case Y_AND_OP:
+	    case Y_AND_OP: // AND
+	    data_f += check_data_f(inst,inst_prev1,inst_prev2);
 	      R[RD (inst)] = R[RS (inst)] & R[RT (inst)];
 	      break;
 
-	    case Y_ANDI_OP:
+	    case Y_ANDI_OP: // ANDI
+	    data_f += check_data_f(inst,inst_prev1,inst_prev2);
 	      R[RT (inst)] = R[RS (inst)] & (0xffff & IMM (inst));
 	      break;
 
@@ -976,6 +1033,7 @@ run_spim (mem_addr initial_PC, int steps_to_run, bool display)
 
 	    case Y_SUB_OP:
 	      {
+	      	data_f += check_data_f(inst,inst_prev1,inst_prev2);
 		reg_word vs = R[RS (inst)], vt = R[RT (inst)];
 		reg_word diff = vs - vt;
 
