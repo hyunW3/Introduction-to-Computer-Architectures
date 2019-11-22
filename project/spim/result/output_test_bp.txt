@@ -1,6 +1,171 @@
 Loaded: ../CPU/exceptions.s
-Number of Cycle : 67
-Number of Data Hazard : 0
-Number of Data Forwarding : 0
-Number of Stall by Data Hazard : 0
-Number of Stall by Branch (Jump) : 0
+dstall_LW:count:0, datah:0, n_dstall:0
+this is cycle:0
+this is cycle:1
+this is cycle:2
+========MEM/WB rd(4) == ID/EX rt
+data_f: count:1, datah:1, dataf:1 -end
+this is cycle:3
+this is cycle:4
+this is cycle:5
+ADDI Instruction
+data_f: count:0, datah:1, dataf:1 -end
+this is cycle:6
+ADDI Instruction
+data_f: count:0, datah:1, dataf:1 -end
+this is cycle:7
+dstall_branch:count:1,plus:0 datah:2, n_dstall:1
+this is cycle:10
+ADDI Instruction
+data_f: count:0, datah:2, dataf:1 -end
+this is cycle:11
+dstall_branch:count:1,plus:0 datah:3, n_dstall:2
+this is cycle:14
+ADDI Instruction
+data_f: count:0, datah:3, dataf:1 -end
+this is cycle:15
+dstall_branch:count:1,plus:0 datah:4, n_dstall:3
+this is cycle:18
+ADDI Instruction
+data_f: count:0, datah:4, dataf:1 -end
+this is cycle:19
+dstall_branch:count:1,plus:0 datah:5, n_dstall:4
+this is cycle:22
+ADDI Instruction
+data_f: count:0, datah:5, dataf:1 -end
+this is cycle:23
+dstall_branch:count:1,plus:0 datah:6, n_dstall:5
+this is cycle:26
+ADDI Instruction
+data_f: count:0, datah:6, dataf:1 -end
+this is cycle:27
+dstall_branch:count:1,plus:0 datah:7, n_dstall:6
+this is cycle:30
+ADDI Instruction
+data_f: count:0, datah:7, dataf:1 -end
+this is cycle:31
+dstall_branch:count:1,plus:0 datah:8, n_dstall:7
+this is cycle:34
+ADDI Instruction
+data_f: count:0, datah:8, dataf:1 -end
+this is cycle:35
+dstall_branch:count:1,plus:0 datah:9, n_dstall:8
+this is cycle:38
+ADDI Instruction
+data_f: count:0, datah:9, dataf:1 -end
+this is cycle:39
+dstall_branch:count:1,plus:0 datah:10, n_dstall:9
+this is cycle:42
+ADDI Instruction
+data_f: count:0, datah:10, dataf:1 -end
+this is cycle:43
+dstall_branch:count:1,plus:0 datah:11, n_dstall:10
+this is cycle:46
+ADDI Instruction
+data_f: count:0, datah:11, dataf:1 -end
+this is cycle:47
+dstall_branch:count:1,plus:0 datah:12, n_dstall:11
+this is cycle:50
+ADDI Instruction
+data_f: count:0, datah:12, dataf:1 -end
+this is cycle:51
+dstall_branch:count:1,plus:0 datah:13, n_dstall:12
+this is cycle:54
+ADDI Instruction
+data_f: count:0, datah:13, dataf:1 -end
+this is cycle:55
+dstall_branch:count:1,plus:0 datah:14, n_dstall:13
+this is cycle:58
+ADDI Instruction
+data_f: count:0, datah:14, dataf:1 -end
+this is cycle:59
+dstall_branch:count:1,plus:0 datah:15, n_dstall:14
+this is cycle:62
+ADDI Instruction
+data_f: count:0, datah:15, dataf:1 -end
+this is cycle:63
+dstall_branch:count:1,plus:0 datah:16, n_dstall:15
+this is cycle:66
+ADDI Instruction
+data_f: count:0, datah:16, dataf:1 -end
+this is cycle:67
+dstall_branch:count:1,plus:0 datah:17, n_dstall:16
+this is cycle:70
+ADDI Instruction
+data_f: count:0, datah:17, dataf:1 -end
+this is cycle:71
+dstall_branch:count:1,plus:0 datah:18, n_dstall:17
+this is cycle:74
+ADDI Instruction
+data_f: count:0, datah:18, dataf:1 -end
+this is cycle:75
+dstall_branch:count:1,plus:0 datah:19, n_dstall:18
+this is cycle:78
+ADDI Instruction
+data_f: count:0, datah:19, dataf:1 -end
+this is cycle:79
+dstall_branch:count:1,plus:0 datah:20, n_dstall:19
+this is cycle:82
+ADDI Instruction
+data_f: count:0, datah:20, dataf:1 -end
+this is cycle:83
+dstall_branch:count:1,plus:0 datah:21, n_dstall:20
+this is cycle:86
+ADDI Instruction
+data_f: count:0, datah:21, dataf:1 -end
+this is cycle:87
+dstall_branch:count:1,plus:0 datah:22, n_dstall:21
+this is cycle:90
+ADDI Instruction
+data_f: count:0, datah:22, dataf:1 -end
+this is cycle:91
+dstall_branch:count:1,plus:0 datah:23, n_dstall:22
+this is cycle:94
+ADDI Instruction
+data_f: count:0, datah:23, dataf:1 -end
+this is cycle:95
+dstall_branch:count:1,plus:0 datah:24, n_dstall:23
+this is cycle:98
+ADDI Instruction
+data_f: count:0, datah:24, dataf:1 -end
+this is cycle:99
+dstall_branch:count:1,plus:0 datah:25, n_dstall:24
+this is cycle:102
+ADDI Instruction
+data_f: count:0, datah:25, dataf:1 -end
+this is cycle:103
+dstall_branch:count:1,plus:0 datah:26, n_dstall:25
+this is cycle:106
+ADDI Instruction
+data_f: count:0, datah:26, dataf:1 -end
+this is cycle:107
+dstall_branch:count:1,plus:0 datah:27, n_dstall:26
+this is cycle:110
+ADDI Instruction
+data_f: count:0, datah:27, dataf:1 -end
+this is cycle:111
+dstall_branch:count:1,plus:0 datah:28, n_dstall:27
+this is cycle:114
+ADDI Instruction
+data_f: count:0, datah:28, dataf:1 -end
+this is cycle:115
+dstall_branch:count:1,plus:0 datah:29, n_dstall:28
+this is cycle:118
+ADDI Instruction
+data_f: count:0, datah:29, dataf:1 -end
+this is cycle:119
+dstall_branch:count:1,plus:0 datah:30, n_dstall:29
+this is cycle:122
+ADDI Instruction
+data_f: count:0, datah:30, dataf:1 -end
+this is cycle:123
+dstall_branch:count:1,plus:0 datah:31, n_dstall:30
+this is cycle:125
+ADDI Instruction
+data_f: count:0, datah:31, dataf:1 -end
+this is cycle:126
+Number of Cycle : 126
+Number of Data Hazard : 31
+Number of Data Forwarding : 1
+Number of Stall by Data Hazard : 30
+Number of Stall by Branch (Jump) : 29

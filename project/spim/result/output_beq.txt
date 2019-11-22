@@ -1,6 +1,27 @@
 Loaded: ../CPU/exceptions.s
-Number of Cycle : 9
-Number of Data Hazard : 0
-Number of Data Forwarding : 0
-Number of Stall by Data Hazard : 0
-Number of Stall by Branch (Jump) : 0
+dstall_LW:count:0, datah:0, n_dstall:0
+this is cycle:0
+this is cycle:1
+this is cycle:2
+========MEM/WB rd(4) == ID/EX rt
+data_f: count:1, datah:1, dataf:1 -end
+this is cycle:3
+this is cycle:4
+this is cycle:5
+data_f: count:0, datah:1, dataf:1 -end
+ADD Instruction
+this is cycle:6
+data_f: count:0, datah:1, dataf:1 -end
+ADD Instruction
+this is cycle:7
+BEQ Instruction
+dstall_branch:count:1,plus:0 datah:2, n_dstall:1
+this is cycle:10
+ADDI Instruction
+data_f: count:0, datah:2, dataf:2 -end
+this is cycle:11
+Number of Cycle : 11
+Number of Data Hazard : 2
+Number of Data Forwarding : 2
+Number of Stall by Data Hazard : 1
+Number of Stall by Branch (Jump) : 1
