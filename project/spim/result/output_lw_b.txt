@@ -1,34 +1,43 @@
 Loaded: ../CPU/exceptions.s
-dstall_LW:count:0, datah:0, n_dstall:0
-this is cycle:0
-this is cycle:1
-this is cycle:2
-========MEM/WB rd(4) == ID/EX rt
-data_f: count:1, datah:1, dataf:1 -end
-this is cycle:3
-this is cycle:4
-this is cycle:5
-data_f: count:0, datah:1, dataf:1 -end
-this is cycle:6
+this is cycle:0,is_stall:0 - 0
+2data_f: count:0, dstall:0 datah:0, dataf:0 
+this is cycle:1,is_stall:0 - 0
+this is cycle:2,is_stall:0 - 0
+this is cycle:3,is_stall:0 - 0
+2data_f: count:0, dstall:0 datah:0, dataf:0 
+this is cycle:4,is_stall:0 - 0
+this is cycle:5,is_stall:0 - 0
+this is cycle:6,is_stall:0 - 0
+this is cycle:7,is_stall:0 - 0
+========EX/MEM rd(3) == ID/EX rs
+1data_f: count:1, datah:0, stall:0 
+2data_f: count:1, dstall:0 datah:1, dataf:1 
+this is cycle:8,is_stall:0 - 0
+========MEM/WB rd(2) == ID/EX rs
+branch: count:0, datah:3, dataf:1 n_dstall:2
+this is cycle:12,is_stall:2 - 0
 ========ID/EX rt == IF/ID rs
-dstall_LW:count:1, datah:2, n_dstall:2
-this is cycle:8
-dstall_branch:count:0,plus:0 datah:2, n_dstall:2
-this is cycle:10
-data_f: count:0, datah:2, dataf:1 -end
-this is cycle:11
-data_f: count:0, datah:2, dataf:1 -end
-this is cycle:12
-========MEM/WB rd(4) == ID/EX rs
-data_f: count:1, datah:3, dataf:2 -end
-ADD Instruction
-this is cycle:13
-this is cycle:14
+1data_f: count:1, datah:3, stall:0 
+save:0, src1:2, src2:5
+2data_f: count:1, dstall:2 datah:4, dataf:2 
+this is cycle:13,is_stall:0 - 0
+1data_f: count:0, datah:4, stall:0 
+save:3, src1:2, src2:6
+2data_f: count:0, dstall:2 datah:4, dataf:2 
+this is cycle:14,is_stall:0 - 0
+1data_f: count:0, datah:4, stall:0 
+save:4, src1:4, src2:2
+2data_f: count:0, dstall:2 datah:4, dataf:2 
+ADD Instruction0
+this is cycle:15,is_stall:0 - 0
+this is cycle:16,is_stall:0 - 0
 ADDI Instruction
-data_f: count:0, datah:3, dataf:2 -end
-this is cycle:15
-Number of Cycle : 15
-Number of Data Hazard : 3
+1data_f: count:0, datah:4, stall:0 
+save:9, src1:0, src2:-1
+2data_f: count:0, dstall:2 datah:4, dataf:2 
+this is cycle:17,is_stall:0 - 0
+Number of Cycle : 16
+Number of Data Hazard : 4
 Number of Data Forwarding : 2
 Number of Stall by Data Hazard : 2
 Number of Stall by Branch (Jump) : 1

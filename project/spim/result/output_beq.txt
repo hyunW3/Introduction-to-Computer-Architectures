@@ -1,27 +1,30 @@
 Loaded: ../CPU/exceptions.s
-dstall_LW:count:0, datah:0, n_dstall:0
-this is cycle:0
-this is cycle:1
-this is cycle:2
-========MEM/WB rd(4) == ID/EX rt
-data_f: count:1, datah:1, dataf:1 -end
-this is cycle:3
-this is cycle:4
-this is cycle:5
-data_f: count:0, datah:1, dataf:1 -end
-ADD Instruction
-this is cycle:6
-data_f: count:0, datah:1, dataf:1 -end
-ADD Instruction
-this is cycle:7
+this is cycle:0,is_stall:0 - 0
+2data_f: count:0, dstall:0 datah:0, dataf:0 
+this is cycle:1,is_stall:0 - 0
+this is cycle:2,is_stall:0 - 0
+this is cycle:3,is_stall:0 - 0
+2data_f: count:0, dstall:0 datah:0, dataf:0 
+this is cycle:4,is_stall:0 - 0
+this is cycle:5,is_stall:0 - 0
+this is cycle:6,is_stall:0 - 0
+2data_f: count:0, dstall:0 datah:0, dataf:0 
+ADD Instruction0
+this is cycle:7,is_stall:0 - 0
+1data_f: count:0, datah:0, stall:0 
+2data_f: count:0, dstall:0 datah:0, dataf:0 
+ADD Instruction0
+this is cycle:8,is_stall:0 - 0
 BEQ Instruction
-dstall_branch:count:1,plus:0 datah:2, n_dstall:1
-this is cycle:10
+branch: count:0, datah:1, dataf:0 n_dstall:1
+this is cycle:11,is_stall:1 - 0
 ADDI Instruction
-data_f: count:0, datah:2, dataf:2 -end
-this is cycle:11
+1data_f: count:0, datah:1, stall:0 
+save:10, src1:0, src2:-1
+2data_f: count:0, dstall:1 datah:1, dataf:0 
+this is cycle:12,is_stall:0 - 0
 Number of Cycle : 11
-Number of Data Hazard : 2
-Number of Data Forwarding : 2
+Number of Data Hazard : 1
+Number of Data Forwarding : 0
 Number of Stall by Data Hazard : 1
 Number of Stall by Branch (Jump) : 1
