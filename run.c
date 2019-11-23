@@ -97,269 +97,177 @@ mem_addr present_addr;
 mem_addr prev1_addr=NULL;
 mem_addr prev2_addr=NULL;
 mem_addr next1_addr=NULL;
-int is_stall_prev=0;
-int is_stall=0;
-int check_format(instruction *inst){
-	  	int op1 = OPCODE(inst);
-	  	int type=0;
-	  	// rs/rt/rd , source-1,save==2,not =0, ex 120(3) = 15, rs =source,rt=save,rd=not
-	  	switch(op1){ // 2 - i format, 1- r format
-	  		case Y_ADDI_OP: // rs source, rt= save data
-	  		case Y_ANDI_OP:
-	  		case Y_ORI_OP :
-	  		case Y_SLTI_OP:
-	  		case Y_LW_OP :
-	  		case Y_SW_OP :
-	  			type = 15;
-	  			break;
-	  		case Y_SLL_OP :
-	  		case Y_SRL_OP :
-	  			type = 5; 
-	  			break;
-	  			// r format rs,rt : source
-	  		case Y_BEQ_OP : // beq,bne is i format,but rs,rt used as source
-	  		case Y_BNE_OP :
-	  			type = 12;
-	  			break;
-	  		case Y_ADD_OP: 
-	  		case Y_SUB_OP :
-	  		case Y_AND_OP:
-	  		case Y_OR_OP :
-	  		case Y_NOR_OP :
-	  		case Y_SLT_OP:
-	  			type =14;
-	  			break;
-	  		case Y_LUI_OP :
-	  			type =6;
-	  			break;
-	  		case Y_JR_OP:
-	  			type =9;
-	  			break;
-	  		case Y_JAL_OP:
-	  		case Y_J_OP:
-	  			type=0;
-	  			break;
-	  		default:
-	  			type = -1;
-	  	}
-	return type;
-} 
-//check_data_f(&n_datah,&n_dataf,inst, inst_type,nst_prev1,prev1_type,inst_prev2,prev2_type)
-int check_data_f(int* n_datah,int* n_dataf,int* n_dstall, instruction *inst, int inst_type,
-	instruction *inst_prev1,int prev1_type, instruction *inst_prev2, int prev2_type){
+void check_data_f(int* n_datah,int* n_dataf,instruction *inst, instruction *inst_prev1,instruction *inst_prev2,int rs,int rt){
 	//if rs,rt flag 1, check rs & rt
 	int count=0;
 	int flag =0; // to avoid count++ when MEM/WB reg == EX/MEM reg 
-	int src1=-1;
-	int src2=-1;
-	int stall=0;
-	int temp1,temp2; // to check double count
-	// if(OPCODE(inst_prev1) == Y_LW_OP )
-	if((inst_type/9) <= 1){ // i format
-		if((inst_type/9) == 1) src1 =RS(inst);
-		inst_type %= 9;
-		if(inst_type/3 == 1) src2 = RT(inst);
-	} 
-	if(prev1_type > 0){
-		int save=0;
-		printf("%d %d\n",prev1_type,prev1_type%9);
-		prev1_type %= 9; 
-		if((prev1_type)/3 == 2) save = RT(inst_prev1);
-		if((prev1_type)%3 == 2) save = RD(inst_prev1);
-	if(OPCODE(inst_prev1) != Y_LW_OP){
-		if(prev1_type != 12){
-		printf("%dsave:%d, src1:%d, src2:%d\n",prev1_type,save,src1,src2);
-		if(src1>0){ // src1 exist and not $0
-
-			if(save == src1){ //src !=0
-				temp1 = src1;
-	      		printf("========EX/MEM rd(%d) == ID/EX rs\n",RS(inst));
+	if(inst_prev1 != NULL){
+		if( rs &&(RD(inst_prev1) ==  RS(inst))){
+	      	//forwarding prev2 RD to RS
+	      	//R[RS(inst)] = R[RD(inst_prev2)];
+	      	if(RD(inst_prev1)*RS(inst) != 0){ // not $0
+	      		printf("========EX/MEM rd(%d) == ID/EX rt\n",RS(inst));
 	      		count++;
 	      		flag=1;
-			}
-		}
-		if(src2>0){
-			if(save == src2){
-				if(src2!=src1){
-				temp2 = src2;
-	    		printf("========EX/MEM rd(%d) == ID/EX rs\n",RT(inst));
-	    	  	count++;
-				flag=2; 					
-			}
-			}			
-		}	
-		}
-	} else { // previous inst is lw and check stall
-		printf("save:%d, src1:%d, src2:%d\n",save,src1,src2);
-		if(src1>0){
-			if(save == src1){
-			
-
-			if(is_stall_prev ==0){
-				stall++; 
-				printf("==stall=ID/EX rt == IF/ID rs\n");
-				temp1 = src1;
-			}else {
-				count++;
-				printf("========ID/EX rt == IF/ID rs\n");
-				temp1 = src1;
-			} 
-
-			}
-		}
-		if(src2>0){
-			if(save == src2){
-				if(src2 != temp1){
-					if(is_stall_prev ==0){
-						printf("==stall=ID/EX rt == IF/ID rt\n");
-						stall++; 
-					}else {
-						printf("========ID/EX rt == IF/ID rt\n");
-						count++;
-					} 
-
-				}
-			}
-		}
+	      	} 
+	    }
+	    if(rt &&( RD(inst_prev1) ==  RT(inst))){ // rs != rd, check rt, and same
+	    	//forwarding prev2 RD to RT
+	    	//R[RT(inst)] = R[RD(inst_prev2)];
+	    	if(RD(inst_prev1)*RT(inst) != 0){ // not $0
+	    		if(RT(inst)!=RS(inst)) {// avoid same reg count
+	    			printf("========EX/MEM rd(%d) == ID/EX rs\n",RT(inst));
+	      			count++;
+					flag=2;   
+				}   		
+	      	}
+	    }	    
 	}
-	//*n_dataf -= stall; // i dont know
-	printf("1data_f: count:%d, datah:%d, stall:%d \n",count,*n_datah,stall);
-	
-	}
-	//printf("\n");
-	
-	 //prev1 check end
-	// test_bp.s 
-	if(stall==0){
-	if(prev2_type >0){
-		int save=0;
-		prev2_type %= 9; 
-		if((prev2_type)/3 == 2) save = RT(inst_prev2);
-		if((prev2_type)%3 == 2) save = RD(inst_prev2);
-		printf("save:%d, src1:%d, src2:%d\n",save,src1,src2);
-	//if(OPCODE(inst_prev1) == Y_LW_OP){
-		if(src1>0){ // src1 exist and not $0
-			if(save == src1){ 
-				if(temp1 != src1){
-	      			printf("=1=======MEM/WB rd(%d) == ID/EX rt\n",RS(inst));
-	      			count++;							
-					flag=1;
-				}
-			}
-		}
-		if(src2>0){
-			if(save == src2){
-				if(temp2 != src2){
-	      			printf("=3=======MEM/WB rd(%d) == ID/EX rt\n",RT(inst));
-	      			count++;							
-					
-				} else {
-					if((src2 == src1)&&flag==1){
-						// pass
-	      			}else {
-	      				printf("==4======MEM/WB rd(%d) == ID/EX rt\n",RT(inst));
-	      				count++;	
-	      			}				
-				}
-			}
-			
-			
-		}
-	//}		
-	}
-	}
-	*n_datah += (count+stall);
+	*n_datah += count;
 	*n_dataf += count;
-	*n_dstall += stall;
-	printf("2data_f: count:%d, dstall:%d datah:%d, dataf:%d \n",count,*n_dstall,*n_datah,*n_dataf);
-	return stall; // n_cycle increased
-}
-int check_dstall_branch(int* n_datah,int* n_dataf,int* n_dstall, instruction *inst, int inst_type,
-	instruction *inst_prev1,int prev1_type, instruction *inst_prev2, int prev2_type){
+	//printf("start-data_f: count:%d, datah:%d, dataf:%d\n",count,*n_datah,*n_dataf);
+	count=0;
+	if((inst_prev2 != NULL)){
+		//printf("OPCODE:%d,%d,%d,prev2: rd %d inst rs:%d rt:%d\n",OPCODE(inst_prev2),OPCODE(inst_prev1),OPCODE(inst),RD(inst_prev2),RS(inst),RT(inst));
+	    if(rs &&(RD(inst_prev2) ==  RS(inst))){
+	      	//forwarding prev2 RD to RS
+	      	//R[RS(inst)] = R[RD(inst_prev2)];
+	      	if(RD(inst_prev2)*RS(inst) != 0){ // not $0 
+	      		if(RD(inst_prev1) != RD(inst_prev2)){
+	      		printf("========MEM/WB rd(%d) == ID/EX rs\n",RS(inst));
+	      		count++;	      			
+	      		}
 
+	      	}
+	    }
+	    if(rt &&( RD(inst_prev2) ==  RT(inst))){
+	  	  //forwarding prev2 RD to RT
+	  	 	//R[RT(inst)] = R[RD(inst_prev2)];
+	      	if(RD(inst_prev2)*RT(inst) != 0){// not $0
+	      		if(RT(inst) != RD(inst_prev1)){
+	    		if(RT(inst)!=RS(inst)) {// avoid same reg count
+	      			printf("========MEM/WB rd(%d) == ID/EX rt\n",RT(inst));
+	      			count++;
+	      		}
+	      		}
+	      	}
+		}
+	}
+	*n_datah += count;
+	*n_dataf += count;
+	printf("data_f: count:%d, datah:%d, dataf:%d -end\n",count,*n_datah,*n_dataf);
+	//printf("\n");
+}
+
+int check_dstall_LW(int* n_datah,int* n_dstall,instruction *inst, instruction *inst_next1,
+	int rs,int rt){
+	int v1 =0;
 	//if rs,rt flag 1, check rs & rt
 	int count=0;
-	int flag =0; // to avoid count++ when MEM/WB reg == EX/MEM reg 
-	int src1=RS(inst);
-	int src2= RT(inst);
-	int temp1,temp2; // to check double count
-	int stall=1; // to count stall
-	if(prev1_type >0){
- 
-		int save=0;
-		prev1_type %= 9; 
-		if((prev1_type)/3 == 2) save = RT(inst_prev1);
-		if((prev1_type)%3 == 2) save = RD(inst_prev1);
-		if(src1>0){ // src1 exist and not $0
-			if(save == src1){ //src !=0
-				temp1 = src1;
-	      		if(OPCODE(inst_prev1) == Y_LW_OP) { // MEM/WB
-	      			printf("=11=======MEM/WB rd(%d) == ID/EX rs\n",RS(inst));
-	      			stall =2; // stall occur
-	      			flag=1;
-	      		} else {
-	      			printf("=22=======EX/MEM rd(%d) == ID/EX rs\n",RS(inst));
-	      			count++; 	      			
+	int flag=0;
+	//printf("%d rd:%d rs:%d rt:%d\nEX/MEM_prev1 rd %d EX/MEM_prev2 rd %d\n",OPCODE(inst),RD(inst),RS(inst),RT(inst),RD(inst_prev1),RD(inst_prev2));
+
+	if(inst_next1 != NULL){
+		//printf("prev1: rd %d inst rs:%d rt:%d\n",RD(inst_prev1),RS(inst),RT(inst));
+	    if( rs &&(RS(inst_next1) ==  RT(inst))){
+	      	if(RS(inst_next1)*RT(inst) != 0){
+	      		printf("========ID/EX rt == IF/ID rs\n");
+	      		count++; flag++;
+	      	}
+	    }
+	    if( rt &&(RT(inst_next1) ==  RT(inst))){
+	      	if(RT(inst_next1)*RT(inst) != 0){
+	      		if(RS(inst_next1) != RT(inst_next1)){
+	      			printf("========ID/EX rt == IF/ID rt\n");
+	      			count++;	      			
 	      		}
+
+	      	}
+	    }
+
+	}
+	*n_datah += count;
+	*n_dstall += count+flag;
+	printf("dstall_LW:count:%d, datah:%d, n_dstall:%d\n",count,*n_datah,*n_dstall);
+	return count; // n_cycle
+	//return v1; // if v1 == 1 (stall occur - no need to data_f)
+} // LW
+// BNE 
+// check when beq
+int check_dstall_branch(int* n_datah,int* n_dataf,int* n_dstall,instruction *inst, instruction *inst_prev1,instruction *inst_prev2,
+	int rs,int rt){
+	int count=0;
+	int plus =0; // avoid double check
+	int check=0;
+	
+	if(inst_prev1 != NULL){
+		//printf("prev_rd:%d, inst_rs:%d inst_rs:%d\n",RD(inst_prev1),RS(inst),RT(inst));
+		int op1 = OPCODE(inst_prev1);
+		if(op1 == Y_LW_OP){ 
+			if(rs && (RD(inst_prev1) == RS(inst))){
+				count++; 
+				plus=1;// count > 0 RS(inst) forwarding complete
+				check =1;
 			}
-		}
-		if(flag!=1){
-			if(src2>0){
-			if(save == src2){
-				if(src2 != src1){
-	    	  	if(OPCODE(inst_prev1) == Y_LW_OP) 
-	    	  		stall =2; // stall occur
-					flag=2; 					
-				} else {
-	    			printf("=33=======EX/MEM rd(%d) == ID/EX rs\n",RT(inst));
-	    	  		count++; 
+			if(rt && (RD(inst_prev1) == RT(inst))){
+				if(RS(inst) != RT(inst)) {
+					count++; plus=1; check =1;
 				}
-				
-			}	
+			}
+		} else if(op1 == Y_ADDI_OP || op1 == Y_ANDI_OP || op1 == Y_ORI_OP || op1== Y_ORI_OP
+			|| op1 == Y_SLTI_OP){
+			//printf("prev_rs:%d, inst_rs:%d inst_rs:%d\n",RS(inst_prev1),RS(inst),RT(inst));
+			if(rs && (RS(inst_prev1) == RS(inst))){
+				count++; check =1;
+				// count > 0 RS(inst) forwarding complete
+			}		
+		}else {
+			if(rs && (RD(inst_prev1) == RS(inst))){
+				count++; check =1;
+				// count > 0 RS(inst) forwarding complete
+			}
+			if(rt && (RD(inst_prev1) == RT(inst))){
+				if(RS(inst) != RT(inst)) {
+					count++; check =1;
+				}
+			}			
+		}
+	}
+
+	if((inst_prev2 != NULL)){
+		int op1 = OPCODE(inst_prev2);
+		if(OPCODE(inst_prev2) == Y_LW_OP){ 
+			if(rs && (RD(inst_prev2) == RS(inst))){
+				if(RD(inst_prev2)!= RD(inst_prev1)) count++;
+			}
+			if(rt && (RD(inst_prev2) == RT(inst))){
+				if(RS(inst) != RT(inst)) {
+				if(RD(inst_prev2)!= RD(inst_prev1)) {
+					count++; 
+				}
+				}
+			}
+		} else if(op1 == Y_ADDI_OP || op1 == Y_ANDI_OP || op1 == Y_ORI_OP || op1== Y_ORI_OP
+			|| op1 == Y_SLTI_OP){
+			if(rs && (RS(inst_prev2) == RS(inst))){
+				*n_dataf += 1;
+			}
+		}else {
+			if(rs && (RD(inst_prev2) == RS(inst))){
+				*n_dataf += 1;
+			}
+			if(rt && (RD(inst_prev2) == RT(inst))){
+				if(RS(inst) != RT(inst)) *n_dataf += 1; // count>0 (stall happen)
 			}
 		}
 	}
-	//if(stall == 0){ although stall, df occur 
-	if(prev2_type >0){
-		//if(inst_prev2)
-		int save=0;
-		prev2_type %= 9; 
-		if((prev2_type)/3 == 2) save = RT(inst_prev2);
-		if((prev2_type)%3 == 2) save = RD(inst_prev2);
-
-		if(src1>0){ // src1 exist and not $0
-			if(save == src1){ //src !=0
-				if(temp1 != src1){
-					if(OPCODE(inst_prev2) != Y_LW_OP) {
-	      			count++; 					
-	      			printf("==44======EX/MEM rd(%d) == ID/EX rs\n",RS(inst));
-	      			}
-				}
-
-			}
-		}
-		if(src2>0){
-			if(save == src2){
-				if(src2 != src1){
-					if(temp2 != src2){
-	    	  		if(OPCODE(inst_prev2) != Y_LW_OP){
-	    	  			count++;  
-	    				printf("==55======EX/MEM rd(%d) == ID/EX rs\n",RT(inst));
-	    			} 
-	    	  		}					
-				}	
-			}
-		}
-	}	
-	//}
-	*n_datah += count;
-	//*n_dataf += count;
-	*n_dstall += stall;
-	printf("branch: count:%d, datah:%d, dataf:%d n_dstall:%d\n",count,*n_datah,*n_dataf,*n_dstall);
-	return stall;
-} 
-
-
+	*n_datah += (count);
+	*n_dstall += (count+plus);
+	
+	printf("dstall_branch:count:%d,plus:%d datah:%d, n_dstall:%d\n",count,plus,*n_datah,*n_dstall);
+	
+	return count+plus; // n_cycle
+}
 
 /* Executed delayed branch and jump instructions by running the
    instruction from the delay slot before transfering control.  Note,
@@ -476,13 +384,9 @@ bool
 run_spim (mem_addr initial_PC, int steps_to_run, bool display)
 {
   instruction *inst;
-  int inst_type=-1;
   instruction *inst_prev1 =NULL;
-  int prev1_type=-1;
   instruction *inst_prev2 = NULL;
-  int prev2_type=-1;
   instruction *inst_next1 = NULL;
-  int next1_type=-1;
   //next1_addr
   static reg_word *delayed_load_addr1 = NULL, delayed_load_value1;
   static reg_word *delayed_load_addr2 = NULL, delayed_load_value2;
@@ -557,46 +461,22 @@ run_spim (mem_addr initial_PC, int steps_to_run, bool display)
 
 	  exception_occurred = 0;
 	  inst = read_mem_inst (PC);
-	  inst_type = check_format(inst);
-	  is_stall=0;
-	  	if(n_cycle==6) {
-	  		inst_next1 = read_mem_inst(PC+BYTES_PER_WORD);
-	  		next1_type = check_format(inst_next1);
-	  	}
-
+	  	inst_next1 = read_mem_inst(PC+BYTES_PER_WORD);
 	  	//if((OPCODE(PC) == Y_BEQ_OP)&&(OPCODE(PC) == Y_BEQ_OP)) inst_next1 == NULL;
-  		//if(n_cycle ==8) prev2_addr = PC;
-  		//if(n_cycle ==7) prev1_addr = PC;
-  		if(prev1_addr != NULL) {
-  			if(is_stall_prev ==0){
-  				if(PC != prev1_addr){
-  				inst_prev1 = read_mem_inst (prev1_addr); // if no, become NULL
-  				prev1_type = check_format(inst_prev1);
-
-  				} 
-  			} else {
-  				//inst_prev1 = NULL;
-  				prev1_type = -1;
-  			}
-  			// if not no need to check
-  		}
-  		if(prev2_addr != NULL){
-  			if(is_stall_prev ==0){
-  				if(PC != prev2_addr){
-   					inst_prev2 = read_mem_inst (prev2_addr);
-  					prev2_type = check_format(inst_prev2); 	
-  				//printf("same\n");
-  				}  		
-  			} else {
-   				inst_prev2 = read_mem_inst (prev1_addr);
-  				prev2_type = check_format(inst_prev1); 				
-  			}
-  			
-
-  		}
- 
-	  printf("this is cycle:%d,is_stall:%d - %d\n",n_cycle,is_stall_prev,is_stall); 		
-
+  		if(n_cycle ==2) prev2_addr = PC;
+  		if(n_cycle ==3) prev1_addr = PC;
+  		if(prev1_addr != NULL) inst_prev1 = read_mem_inst (prev1_addr); // if no, become NULL
+  		if(prev2_addr != NULL)inst_prev2 = read_mem_inst (prev2_addr);
+  		/*
+	  if(PC >= (initial_PC+BYTES_PER_WORD)){
+	  	//printf("fetch prev1!\n");
+	  	inst_prev1 = read_mem_inst (PC-BYTES_PER_WORD); // if no, become NULL
+	  	if(PC >= (initial_PC+BYTES_PER_WORD*2)) {
+	  	//printf("fetch prev2!\n");
+	  		inst_prev2 = read_mem_inst (PC-(BYTES_PER_WORD*2));
+	  	}
+	  	
+	  }*/
 
 	  
 	  if (exception_occurred) /* In reading instruction */
@@ -618,8 +498,7 @@ run_spim (mem_addr initial_PC, int steps_to_run, bool display)
 	      return false;
 	    }
 
-	 	//if (1) // display
-	 if(display)
+	  if (display)
 	    print_inst (PC);
 
 #ifdef TEST_ASM
@@ -632,8 +511,8 @@ run_spim (mem_addr initial_PC, int steps_to_run, bool display)
 
 	    case Y_ADD_OP: // ADD
 	      {
-	      	is_stall = check_data_f(&n_datah,&n_dataf,&n_dstall,inst, inst_type,inst_prev1,prev1_type,inst_prev2,prev2_type);
-	      	printf("ADD Instruction%d\n",is_stall);
+	      	check_data_f(&n_datah,&n_dataf,inst,inst_prev1,inst_prev2,1,1);
+	      	printf("ADD Instruction\n");
 		reg_word vs = R[RS (inst)], vt = R[RT (inst)];
 		reg_word sum = vs + vt;
 
@@ -646,7 +525,7 @@ run_spim (mem_addr initial_PC, int steps_to_run, bool display)
 	    case Y_ADDI_OP: //ADDI
 	      {
 	      	printf("ADDI Instruction\n");
-	      	is_stall =  check_data_f(&n_datah,&n_dataf,&n_dstall,inst, inst_type,inst_prev1,prev1_type,inst_prev2,prev2_type);
+	      	check_data_f(&n_datah,&n_dataf,inst,inst_prev1,inst_prev2,1,0);
 		reg_word vs = R[RS (inst)], imm = (short) IMM (inst);
 		reg_word sum = vs + imm;
 
@@ -665,12 +544,12 @@ run_spim (mem_addr initial_PC, int steps_to_run, bool display)
 	      break;
 
 	    case Y_AND_OP: // AND
-	      	is_stall =  check_data_f(&n_datah,&n_dataf,&n_dstall,inst, inst_type,inst_prev1,prev1_type,inst_prev2,prev2_type);
+	      	check_data_f(&n_datah,&n_dataf,inst,inst_prev1,inst_prev2,1,1);
 	      R[RD (inst)] = R[RS (inst)] & R[RT (inst)];
 	      break;
 
 	    case Y_ANDI_OP: // ANDI
-	      	is_stall =  check_data_f(&n_datah,&n_dataf,&n_dstall,inst, inst_type,inst_prev1,prev1_type,inst_prev2,prev2_type);
+	      	check_data_f(&n_datah,&n_dataf,inst,inst_prev1,inst_prev2,1,0);
 	      R[RT (inst)] = R[RS (inst)] & (0xffff & IMM (inst));
 	      break;
 
@@ -681,12 +560,12 @@ run_spim (mem_addr initial_PC, int steps_to_run, bool display)
 	      RAISE_EXCEPTION (ExcCode_CpU, {}); /* No Coprocessor 2 */
 	      break;
 
-	    case Y_BEQ_OP: // e
+	    case Y_BEQ_OP: // BEQ
 	    printf("BEQ Instruction\n");
 	      if(R[RS (inst)] == R[RT (inst)]) { n_bstall++; n_cycle++; }
 
-	        is_stall += check_dstall_branch(&n_datah,&n_dataf,&n_dstall,inst, inst_type,inst_prev1,prev1_type,inst_prev2,prev2_type);
-	        //check_data_f(&n_datah,&n_dataf,inst, inst_type,inst_prev1,prev1_type,inst_prev2,prev2_type);
+	      n_cycle += check_dstall_branch(&n_datah,&n_dataf,&n_dstall,inst,inst_prev1,inst_prev2,1,1);
+	      	//check_data_f(&n_datah,&n_dataf,inst,inst_prev1,inst_prev2,1,1);
 	      BRANCH_INST (R[RS (inst)] == R[RT (inst)],
 			   PC + IDISP (inst),
 			   0);
@@ -775,12 +654,13 @@ run_spim (mem_addr initial_PC, int steps_to_run, bool display)
 	      break;
 
 	    case Y_BNE_OP: // BNE
-	      	//check_data_f(&n_datah,&n_dataf,inst, inst_type,inst_prev1,prev1_type,inst_prev2,prev2_type);
+	      	//check_data_f(&n_datah,&n_dataf,inst,inst_prev1,inst_prev2,1,1);
 		//printf("prev_rd:%d, inst_rs:%d inst_rs:%d\n",RD(inst_prev1),RS(inst),RT(inst));
 	        if(R[RS (inst)] != R[RT (inst)]) {
 	        	n_bstall++; n_cycle++;}
-	        is_stall += check_dstall_branch(&n_datah,&n_dataf,&n_dstall,inst, inst_type,inst_prev1,prev1_type,inst_prev2,prev2_type);
-	        BRANCH_INST (R[RS (inst)] != R[RT (inst)],
+	        n_cycle += check_dstall_branch(&n_datah,&n_dataf,&n_dstall,inst,inst_prev1,inst_prev2,1,1);
+
+	      BRANCH_INST (R[RS (inst)] != R[RT (inst)],
 			   PC + IDISP (inst),
 			   0);
 	      	
@@ -940,15 +820,14 @@ run_spim (mem_addr initial_PC, int steps_to_run, bool display)
 	      break;
 
 	    case Y_LUI_OP: // LUI
-	    //check_data_f(&n_datah,&n_dataf,inst, inst_prev1,inst_prev2,0,0);
+	    check_data_f(&n_datah,&n_dataf,inst, inst_prev1,inst_prev2,0,1);
 
 	      R[RT (inst)] = (IMM (inst) << 16) & 0xffff0000;
 	      break;
 
-	    case Y_LW_OP: // LW not sure
-	    is_stall = check_data_f(&n_datah,&n_dataf,&n_dstall,inst, inst_type,inst_prev1,prev1_type,inst_prev2,prev2_type);
-	      	
-			//is_stall +=check_dstall_LW(&n_datah,&n_dstall,inst,inst_next1,1,1);
+	    case Y_LW_OP: // LW
+	      	//check_data_f(&n_datah,&n_dataf,inst,inst_prev1,inst_prev2,0,1);
+			n_cycle +=check_dstall_LW(&n_datah,&n_dstall,inst,inst_next1,1,1);
 	      LOAD_INST (&R[RT (inst)],
 			 read_mem_word (R[BASE (inst)] + IOFFSET (inst)),
 			 0xffffffff);
@@ -1192,17 +1071,17 @@ run_spim (mem_addr initial_PC, int steps_to_run, bool display)
 	      break;
 
 	    case Y_NOR_OP: // NOR
-	      	is_stall =  check_data_f(&n_datah,&n_dataf,&n_dstall,inst, inst_type,inst_prev1,prev1_type,inst_prev2,prev2_type);
+	      	check_data_f(&n_datah,&n_dataf,inst,inst_prev1,inst_prev2,1,1);
 	      R[RD (inst)] = ~ (R[RS (inst)] | R[RT (inst)]);
 	      break;
 
 	    case Y_OR_OP: // OR
-	      	is_stall = check_data_f(&n_datah,&n_dataf,&n_dstall,inst, inst_type,inst_prev1,prev1_type,inst_prev2,prev2_type);
+	      	check_data_f(&n_datah,&n_dataf,inst,inst_prev1,inst_prev2,1,1);
 	      R[RD (inst)] = R[RS (inst)] | R[RT (inst)];
 	      break;
 
 	    case Y_ORI_OP: // ORI
-	      	is_stall = check_data_f(&n_datah,&n_dataf,&n_dstall,inst, inst_type,inst_prev1,prev1_type,inst_prev2,prev2_type);
+	      	check_data_f(&n_datah,&n_dataf,inst,inst_prev1,inst_prev2,1,0);
 	      R[RT (inst)] = R[RS (inst)] | (0xffff & IMM (inst));
 	      break;
 
@@ -1239,7 +1118,7 @@ run_spim (mem_addr initial_PC, int steps_to_run, bool display)
 
 	    case Y_SLL_OP: // SLL
 	      {
-	      	is_stall = check_data_f(&n_datah,&n_dataf,&n_dstall,inst, inst_type,inst_prev1,prev1_type,inst_prev2,prev2_type);
+	      	check_data_f(&n_datah,&n_dataf,inst,inst_prev1,inst_prev2,0,1);
 		int shamt = SHAMT (inst);
 
 		if (shamt >= 0 && shamt < 32)
@@ -1320,7 +1199,7 @@ run_spim (mem_addr initial_PC, int steps_to_run, bool display)
 
 	    case Y_SRL_OP: // SRL
 	      {
-	      	is_stall = check_data_f(&n_datah,&n_dataf,&n_dstall,inst, inst_type,inst_prev1,prev1_type,inst_prev2,prev2_type);
+	      	check_data_f(&n_datah,&n_dataf,inst,inst_prev1,inst_prev2,0,1);
 		int shamt = SHAMT (inst);
 		u_reg_word val = R[RT (inst)];
 
@@ -1345,7 +1224,7 @@ run_spim (mem_addr initial_PC, int steps_to_run, bool display)
 
 	    case Y_SUB_OP: // SUB
 	      {
-	      	is_stall = check_data_f(&n_datah,&n_dataf,&n_dstall,inst, inst_type,inst_prev1,prev1_type,inst_prev2,prev2_type);
+	      	check_data_f(&n_datah,&n_dataf,inst,inst_prev1,inst_prev2,1,1);
 		reg_word vs = R[RS (inst)], vt = R[RT (inst)];
 		reg_word diff = vs - vt;
 
@@ -2012,24 +1891,11 @@ run_spim (mem_addr initial_PC, int steps_to_run, bool display)
 	    }
 
 	  /* After instruction executes: */  		
-	  if(n_cycle >=7) {
-	  	if(prev1_addr != NULL) prev2_addr = prev1_addr;
-	  }
-
-  	  if(n_cycle >= 6) {
-  	  	prev1_addr = PC;	 
-  	  	is_stall_prev = is_stall;
-  	  }
-  	  if(n_cycle > 6) 	  n_cycle += is_stall;
-
+	  prev2_addr = prev1_addr;
+  	  prev1_addr = PC;
 	  PC += BYTES_PER_WORD;
-	  if(prev2_addr == PC) {
-	  	prev2_addr =NULL; prev2_type = -1;
-	  }
-	  is_stall=0;
+	  printf("this is cycle:%d\n",n_cycle);
 	  n_cycle++; // hyun
-
-
 
 	  if (exception_occurred)
 	    {

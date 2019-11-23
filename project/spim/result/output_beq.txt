@@ -11,15 +11,17 @@ this is cycle:6,is_stall:0 - 0
 2data_f: count:0, dstall:0 datah:0, dataf:0 
 ADD Instruction0
 this is cycle:7,is_stall:0 - 0
+14 5
+5save:8, src1:0, src2:0
 1data_f: count:0, datah:0, stall:0 
 2data_f: count:0, dstall:0 datah:0, dataf:0 
 ADD Instruction0
 this is cycle:8,is_stall:0 - 0
 BEQ Instruction
-branch: count:0, datah:1, dataf:0 n_dstall:1
+==44======EX/MEM rd(8) == ID/EX rs
+branch: count:1, datah:1, dataf:0 n_dstall:1
 this is cycle:11,is_stall:1 - 0
 ADDI Instruction
-1data_f: count:0, datah:1, stall:0 
 save:10, src1:0, src2:-1
 2data_f: count:0, dstall:1 datah:1, dataf:0 
 this is cycle:12,is_stall:0 - 0

@@ -9,35 +9,43 @@ this is cycle:4,is_stall:0 - 0
 this is cycle:5,is_stall:0 - 0
 this is cycle:6,is_stall:0 - 0
 this is cycle:7,is_stall:0 - 0
+6 6
+6save:3, src1:3, src2:-1
 ========EX/MEM rd(3) == ID/EX rs
 1data_f: count:1, datah:0, stall:0 
 2data_f: count:1, dstall:0 datah:1, dataf:1 
 this is cycle:8,is_stall:0 - 0
-========MEM/WB rd(2) == ID/EX rs
-branch: count:0, datah:3, dataf:1 n_dstall:2
+=11=======MEM/WB rd(2) == ID/EX rs
+==55======EX/MEM rd(3) == ID/EX rs
+branch: count:1, datah:2, dataf:1 n_dstall:2
 this is cycle:12,is_stall:2 - 0
-========ID/EX rt == IF/ID rs
-1data_f: count:1, datah:3, stall:0 
 save:0, src1:2, src2:5
-2data_f: count:1, dstall:2 datah:4, dataf:2 
+2data_f: count:0, dstall:2 datah:2, dataf:1 
 this is cycle:13,is_stall:0 - 0
-1data_f: count:0, datah:4, stall:0 
+14 5
+5save:4, src1:2, src2:6
+1data_f: count:0, datah:2, stall:0 
 save:3, src1:2, src2:6
-2data_f: count:0, dstall:2 datah:4, dataf:2 
+2data_f: count:0, dstall:2 datah:2, dataf:1 
 this is cycle:14,is_stall:0 - 0
-1data_f: count:0, datah:4, stall:0 
+14 5
+5save:8, src1:4, src2:2
+1data_f: count:0, datah:2, stall:0 
 save:4, src1:4, src2:2
-2data_f: count:0, dstall:2 datah:4, dataf:2 
+=1=======MEM/WB rd(4) == ID/EX rt
+2data_f: count:1, dstall:2 datah:3, dataf:2 
 ADD Instruction0
 this is cycle:15,is_stall:0 - 0
 this is cycle:16,is_stall:0 - 0
 ADDI Instruction
-1data_f: count:0, datah:4, stall:0 
+14 5
+5save:3, src1:0, src2:-1
+1data_f: count:0, datah:3, stall:0 
 save:9, src1:0, src2:-1
-2data_f: count:0, dstall:2 datah:4, dataf:2 
+2data_f: count:0, dstall:2 datah:3, dataf:2 
 this is cycle:17,is_stall:0 - 0
 Number of Cycle : 16
-Number of Data Hazard : 4
+Number of Data Hazard : 3
 Number of Data Forwarding : 2
 Number of Stall by Data Hazard : 2
 Number of Stall by Branch (Jump) : 1
