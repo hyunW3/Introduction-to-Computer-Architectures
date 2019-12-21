@@ -1,0 +1,138 @@
+Initialize Your Cache...
+Finished to Initialize Your Cache!
+
+
+write_op:22f7cf44-----------write process
+-----level:1-----
+0 1
+28 1 1 2
+22f7cf4 0 1 0
+write!  @level:1,index:0,ways:1 at 2
+hit:0,miss:1
+-----level:2-----
+0 1
+28 1 1 2
+22f7cf4 0 1 0
+write!  @level:2,index:0,ways:1 at 10
+hit:0,miss:1
+MEM Fetch! of 400
+WT!(level 1) of 10
+total Level_1 : hit:0,miss:1
+total Level_2: hit:0,miss:1
+22f7cf44 used_cycle :422
+
+read_op:22f7cf40-----------read process
+-----level:1-----
+28 1 1 2
+22f7cf4 0 0 0
+hit!  @level:1,index:0,ways:1 at 422
+hit:1,miss:0
+total Level_1 : hit:1,miss:1
+total Level_2: hit:0,miss:1
+22f7cf40 used_cycle :2
+
+read_op:22f7ca3c-----------read process
+-----level:1-----
+28 1 1 2
+22f7ca3 1 1 0
+miss!  @level:1,index:1,ways:1 at 424
+hit:0,miss:1
+total Level_1 : hit:1,miss:2
+total Level_2: hit:0,miss:1
+-----level:2-----
+28 1 1 2
+22f7ca3 1 1 0
+28 1 1 2
+22f7ca3 1 1 0
+miss!  @level:2,index:1,ways:2 at 424
+hit:0,miss:1
+total Level_1 : hit:1,miss:2
+total Level_2: hit:0,miss:2
+MEM Fetch! of 400
+22f7ca3c used_cycle :412
+
+write_op:22f7ca30-----------write process
+-----level:1-----
+0 1
+28 1 1 2
+22f7ca3 0 0 0
+REPLACE!  @level:1,index:0,ways:1 at 2
+hit:0,miss:1
+-----level:2-----
+0 1
+28 1 1 2
+22f7ca3 0 0 0
+0 1
+28 1 1 2
+22f7ca3 0 0 0
+write!  @level:2,index:0,ways:2 at 10
+hit:0,miss:1
+MEM Fetch! of 400
+WT!(level 1) of 10
+total Level_1 : hit:1,miss:3
+total Level_2: hit:0,miss:3
+22f7ca30 used_cycle :422
+
+read_op:22f7cf40-----------read process
+-----level:1-----
+28 1 1 2
+22f7cf4 0 0 0
+miss!  @level:1,index:0,ways:1 at 1258
+hit:0,miss:1
+total Level_1 : hit:1,miss:4
+total Level_2: hit:0,miss:3
+-----level:2-----
+28 1 1 2
+22f7cf4 0 0 0
+hit!  @level:2,index:0,ways:1 at 1258
+hit:1,miss:0
+total Level_1 : hit:1,miss:4
+total Level_2: hit:1,miss:3
+22f7cf40 used_cycle :12
+
+write_op:22f7c420-----------write process
+-----level:1-----
+0 1
+28 1 1 2
+22f7c42 0 0 0
+REPLACE!  @level:1,index:0,ways:1 at 2
+hit:0,miss:1
+-----level:2-----
+0 1
+28 1 1 2
+22f7c42 0 0 0
+0 1
+28 1 1 2
+22f7c42 0 0 0
+WB!  @level:2,index:0,ways:1 at 400
+REPLACE!  @level:2,index:0,ways:1 at 10
+hit:0,miss:1
+MEM Fetch! of 400
+WT!(level 1) of 10
+total Level_1 : hit:1,miss:5
+total Level_2: hit:1,miss:4
+22f7c420 used_cycle :822
+
+write_op:22f7c420-----------write process
+-----level:1-----
+0 1
+28 1 1 2
+22f7c42 0 0 0
+update!  @level:1,index:0,ways:1 at 2
+WT!  @level:1,index:0 at 10
+hit:1,miss:0
+total Level_1 : hit:2,miss:5
+total Level_2: hit:1,miss:4
+22f7c420 used_cycle :12
+
+read_op:22f7c424-----------read process
+-----level:1-----
+28 1 1 2
+22f7c42 0 1 0
+hit!  @level:1,index:0,ways:1 at 2104
+hit:1,miss:0
+total Level_1 : hit:3,miss:5
+total Level_2: hit:1,miss:4
+22f7c424 used_cycle :2
+Destroy Your Cache...
+Finished to Destroy Your Cache!
