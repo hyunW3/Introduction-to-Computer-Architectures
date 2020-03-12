@@ -1,0 +1,40 @@
+Loaded: ../CPU/exceptions.s
+this is cycle:0,is_stall:0 - 0
+2data_f: count:0, dstall:0 datah:0, dataf:0 
+this is cycle:1,is_stall:0 - 0
+this is cycle:2,is_stall:0 - 0
+this is cycle:3,is_stall:0 - 0
+2data_f: count:0, dstall:0 datah:0, dataf:0 
+this is cycle:4,is_stall:0 - 0
+this is cycle:5,is_stall:0 - 0
+this is cycle:6,is_stall:0 - 0
+2data_f: count:0, dstall:0 datah:0, dataf:0 
+ADD Instruction0
+this is cycle:7,is_stall:0 - 0
+ADDI Instruction
+14 5
+5save:8, src1:8, src2:-1
+========EX/MEM rd(8) == ID/EX rs
+1data_f: count:1, datah:0, stall:0 
+2data_f: count:1, dstall:0 datah:1, dataf:1 
+this is cycle:8,is_stall:0 - 0
+15 6
+6save:9, src1:9, src2:8
+========EX/MEM rd(9) == ID/EX rs
+1data_f: count:1, datah:1, stall:0 
+save:8, src1:9, src2:8
+=3=======MEM/WB rd(8) == ID/EX rt
+2data_f: count:2, dstall:0 datah:3, dataf:3 
+this is cycle:9,is_stall:0 - 0
+ADDI Instruction
+14 5
+5save:10, src1:0, src2:-1
+1data_f: count:0, datah:3, stall:0 
+save:9, src1:0, src2:-1
+2data_f: count:0, dstall:0 datah:3, dataf:3 
+this is cycle:10,is_stall:0 - 0
+Number of Cycle : 9
+Number of Data Hazard : 3
+Number of Data Forwarding : 3
+Number of Stall by Data Hazard : 0
+Number of Stall by Branch (Jump) : 0

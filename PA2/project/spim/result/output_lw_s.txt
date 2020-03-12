@@ -1,0 +1,47 @@
+Loaded: ../CPU/exceptions.s
+this is cycle:0,is_stall:0 - 0
+2data_f: count:0, dstall:0 datah:0, dataf:0 
+this is cycle:1,is_stall:0 - 0
+this is cycle:2,is_stall:0 - 0
+this is cycle:3,is_stall:0 - 0
+2data_f: count:0, dstall:0 datah:0, dataf:0 
+this is cycle:4,is_stall:0 - 0
+this is cycle:5,is_stall:0 - 0
+this is cycle:6,is_stall:0 - 0
+this is cycle:7,is_stall:0 - 0
+6 6
+6save:3, src1:3, src2:-1
+========EX/MEM rd(3) == ID/EX rs
+1data_f: count:1, datah:0, stall:0 
+2data_f: count:1, dstall:0 datah:1, dataf:1 
+this is cycle:8,is_stall:0 - 0
+15 6
+save:2, src1:2, src2:5
+==stall=ID/EX rt == IF/ID rs
+1data_f: count:0, datah:1, stall:1 
+2data_f: count:0, dstall:1 datah:2, dataf:1 
+this is cycle:10,is_stall:1 - 0
+save:5, src1:2, src2:6
+2data_f: count:0, dstall:1 datah:2, dataf:1 
+this is cycle:11,is_stall:0 - 0
+14 5
+5save:8, src1:4, src2:2
+1data_f: count:0, datah:2, stall:0 
+save:4, src1:4, src2:2
+=1=======MEM/WB rd(4) == ID/EX rt
+2data_f: count:1, dstall:1 datah:3, dataf:2 
+ADD Instruction0
+this is cycle:12,is_stall:0 - 0
+this is cycle:13,is_stall:0 - 0
+ADDI Instruction
+14 5
+5save:3, src1:0, src2:-1
+1data_f: count:0, datah:3, stall:0 
+save:9, src1:0, src2:-1
+2data_f: count:0, dstall:1 datah:3, dataf:2 
+this is cycle:14,is_stall:0 - 0
+Number of Cycle : 13
+Number of Data Hazard : 3
+Number of Data Forwarding : 2
+Number of Stall by Data Hazard : 1
+Number of Stall by Branch (Jump) : 0

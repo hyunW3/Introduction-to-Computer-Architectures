@@ -1,0 +1,31 @@
+270 add
+273 addi
+506
+520 sub
+533 beq
+t0 8
+t1 9 (3?)
+t2 10
+
+v0 2
+
+
+273 - and?
+
+check_data_f - ADD, ADDI, SUB, AND, ANDI,NOR, OR, ORI, SLL,SRL, 
+check_dstall lw,BEQ,
+n_bstall++ - BNE
+other func,but data_f   JR,SW,SLT, SLTI,
+NO DATA_F - LUI, J, JAL,
+
+ SYSCALL
+
+	      	check_data_f(&n_datah,&n_dataf,inst,inst_prev1,inst_prev2,1,1);
+-> WHEN branch occured , wrong pc access -> solved, data_forwarding fin
+
+jump case think
+ex4> stall by data hazard
+ex5> prev2_inst is same as inst - solved
+ex3> data forwarding :0 but answeris 1
+
+  int n_cycle = 0, n_datah = 0, n_dataf = 0, n_dstall = 0, n_bstall = 0;

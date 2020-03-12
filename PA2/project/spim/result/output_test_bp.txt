@@ -1,0 +1,206 @@
+Loaded: ../CPU/exceptions.s
+this is cycle:0,is_stall:0 - 0
+2data_f: count:0, dstall:0 datah:0, dataf:0 
+this is cycle:1,is_stall:0 - 0
+this is cycle:2,is_stall:0 - 0
+this is cycle:3,is_stall:0 - 0
+2data_f: count:0, dstall:0 datah:0, dataf:0 
+this is cycle:4,is_stall:0 - 0
+this is cycle:5,is_stall:0 - 0
+this is cycle:6,is_stall:0 - 0
+ADDI Instruction
+2data_f: count:0, dstall:0 datah:0, dataf:0 
+this is cycle:7,is_stall:0 - 0
+ADDI Instruction
+15 6
+6save:8, src1:8, src2:-1
+========EX/MEM rd(8) == ID/EX rs
+1data_f: count:1, datah:0, stall:0 
+2data_f: count:1, dstall:0 datah:1, dataf:1 
+this is cycle:8,is_stall:0 - 0
+=22=======EX/MEM rd(8) == ID/EX rs
+branch: count:1, datah:2, dataf:1 n_dstall:1
+this is cycle:11,is_stall:1 - 0
+ADDI Instruction
+2data_f: count:0, dstall:1 datah:2, dataf:1 
+this is cycle:12,is_stall:0 - 0
+=22=======EX/MEM rd(8) == ID/EX rs
+branch: count:1, datah:3, dataf:1 n_dstall:2
+this is cycle:15,is_stall:1 - 0
+ADDI Instruction
+2data_f: count:0, dstall:2 datah:3, dataf:1 
+this is cycle:16,is_stall:0 - 0
+=22=======EX/MEM rd(8) == ID/EX rs
+branch: count:1, datah:4, dataf:1 n_dstall:3
+this is cycle:19,is_stall:1 - 0
+ADDI Instruction
+2data_f: count:0, dstall:3 datah:4, dataf:1 
+this is cycle:20,is_stall:0 - 0
+=22=======EX/MEM rd(8) == ID/EX rs
+branch: count:1, datah:5, dataf:1 n_dstall:4
+this is cycle:23,is_stall:1 - 0
+ADDI Instruction
+2data_f: count:0, dstall:4 datah:5, dataf:1 
+this is cycle:24,is_stall:0 - 0
+=22=======EX/MEM rd(8) == ID/EX rs
+branch: count:1, datah:6, dataf:1 n_dstall:5
+this is cycle:27,is_stall:1 - 0
+ADDI Instruction
+2data_f: count:0, dstall:5 datah:6, dataf:1 
+this is cycle:28,is_stall:0 - 0
+=22=======EX/MEM rd(8) == ID/EX rs
+branch: count:1, datah:7, dataf:1 n_dstall:6
+this is cycle:31,is_stall:1 - 0
+ADDI Instruction
+2data_f: count:0, dstall:6 datah:7, dataf:1 
+this is cycle:32,is_stall:0 - 0
+=22=======EX/MEM rd(8) == ID/EX rs
+branch: count:1, datah:8, dataf:1 n_dstall:7
+this is cycle:35,is_stall:1 - 0
+ADDI Instruction
+2data_f: count:0, dstall:7 datah:8, dataf:1 
+this is cycle:36,is_stall:0 - 0
+=22=======EX/MEM rd(8) == ID/EX rs
+branch: count:1, datah:9, dataf:1 n_dstall:8
+this is cycle:39,is_stall:1 - 0
+ADDI Instruction
+2data_f: count:0, dstall:8 datah:9, dataf:1 
+this is cycle:40,is_stall:0 - 0
+=22=======EX/MEM rd(8) == ID/EX rs
+branch: count:1, datah:10, dataf:1 n_dstall:9
+this is cycle:43,is_stall:1 - 0
+ADDI Instruction
+2data_f: count:0, dstall:9 datah:10, dataf:1 
+this is cycle:44,is_stall:0 - 0
+=22=======EX/MEM rd(8) == ID/EX rs
+branch: count:1, datah:11, dataf:1 n_dstall:10
+this is cycle:47,is_stall:1 - 0
+ADDI Instruction
+2data_f: count:0, dstall:10 datah:11, dataf:1 
+this is cycle:48,is_stall:0 - 0
+=22=======EX/MEM rd(8) == ID/EX rs
+branch: count:1, datah:12, dataf:1 n_dstall:11
+this is cycle:51,is_stall:1 - 0
+ADDI Instruction
+2data_f: count:0, dstall:11 datah:12, dataf:1 
+this is cycle:52,is_stall:0 - 0
+=22=======EX/MEM rd(8) == ID/EX rs
+branch: count:1, datah:13, dataf:1 n_dstall:12
+this is cycle:55,is_stall:1 - 0
+ADDI Instruction
+2data_f: count:0, dstall:12 datah:13, dataf:1 
+this is cycle:56,is_stall:0 - 0
+=22=======EX/MEM rd(8) == ID/EX rs
+branch: count:1, datah:14, dataf:1 n_dstall:13
+this is cycle:59,is_stall:1 - 0
+ADDI Instruction
+2data_f: count:0, dstall:13 datah:14, dataf:1 
+this is cycle:60,is_stall:0 - 0
+=22=======EX/MEM rd(8) == ID/EX rs
+branch: count:1, datah:15, dataf:1 n_dstall:14
+this is cycle:63,is_stall:1 - 0
+ADDI Instruction
+2data_f: count:0, dstall:14 datah:15, dataf:1 
+this is cycle:64,is_stall:0 - 0
+=22=======EX/MEM rd(8) == ID/EX rs
+branch: count:1, datah:16, dataf:1 n_dstall:15
+this is cycle:67,is_stall:1 - 0
+ADDI Instruction
+2data_f: count:0, dstall:15 datah:16, dataf:1 
+this is cycle:68,is_stall:0 - 0
+=22=======EX/MEM rd(8) == ID/EX rs
+branch: count:1, datah:17, dataf:1 n_dstall:16
+this is cycle:71,is_stall:1 - 0
+ADDI Instruction
+2data_f: count:0, dstall:16 datah:17, dataf:1 
+this is cycle:72,is_stall:0 - 0
+=22=======EX/MEM rd(8) == ID/EX rs
+branch: count:1, datah:18, dataf:1 n_dstall:17
+this is cycle:75,is_stall:1 - 0
+ADDI Instruction
+2data_f: count:0, dstall:17 datah:18, dataf:1 
+this is cycle:76,is_stall:0 - 0
+=22=======EX/MEM rd(8) == ID/EX rs
+branch: count:1, datah:19, dataf:1 n_dstall:18
+this is cycle:79,is_stall:1 - 0
+ADDI Instruction
+2data_f: count:0, dstall:18 datah:19, dataf:1 
+this is cycle:80,is_stall:0 - 0
+=22=======EX/MEM rd(8) == ID/EX rs
+branch: count:1, datah:20, dataf:1 n_dstall:19
+this is cycle:83,is_stall:1 - 0
+ADDI Instruction
+2data_f: count:0, dstall:19 datah:20, dataf:1 
+this is cycle:84,is_stall:0 - 0
+=22=======EX/MEM rd(8) == ID/EX rs
+branch: count:1, datah:21, dataf:1 n_dstall:20
+this is cycle:87,is_stall:1 - 0
+ADDI Instruction
+2data_f: count:0, dstall:20 datah:21, dataf:1 
+this is cycle:88,is_stall:0 - 0
+=22=======EX/MEM rd(8) == ID/EX rs
+branch: count:1, datah:22, dataf:1 n_dstall:21
+this is cycle:91,is_stall:1 - 0
+ADDI Instruction
+2data_f: count:0, dstall:21 datah:22, dataf:1 
+this is cycle:92,is_stall:0 - 0
+=22=======EX/MEM rd(8) == ID/EX rs
+branch: count:1, datah:23, dataf:1 n_dstall:22
+this is cycle:95,is_stall:1 - 0
+ADDI Instruction
+2data_f: count:0, dstall:22 datah:23, dataf:1 
+this is cycle:96,is_stall:0 - 0
+=22=======EX/MEM rd(8) == ID/EX rs
+branch: count:1, datah:24, dataf:1 n_dstall:23
+this is cycle:99,is_stall:1 - 0
+ADDI Instruction
+2data_f: count:0, dstall:23 datah:24, dataf:1 
+this is cycle:100,is_stall:0 - 0
+=22=======EX/MEM rd(8) == ID/EX rs
+branch: count:1, datah:25, dataf:1 n_dstall:24
+this is cycle:103,is_stall:1 - 0
+ADDI Instruction
+2data_f: count:0, dstall:24 datah:25, dataf:1 
+this is cycle:104,is_stall:0 - 0
+=22=======EX/MEM rd(8) == ID/EX rs
+branch: count:1, datah:26, dataf:1 n_dstall:25
+this is cycle:107,is_stall:1 - 0
+ADDI Instruction
+2data_f: count:0, dstall:25 datah:26, dataf:1 
+this is cycle:108,is_stall:0 - 0
+=22=======EX/MEM rd(8) == ID/EX rs
+branch: count:1, datah:27, dataf:1 n_dstall:26
+this is cycle:111,is_stall:1 - 0
+ADDI Instruction
+2data_f: count:0, dstall:26 datah:27, dataf:1 
+this is cycle:112,is_stall:0 - 0
+=22=======EX/MEM rd(8) == ID/EX rs
+branch: count:1, datah:28, dataf:1 n_dstall:27
+this is cycle:115,is_stall:1 - 0
+ADDI Instruction
+2data_f: count:0, dstall:27 datah:28, dataf:1 
+this is cycle:116,is_stall:0 - 0
+=22=======EX/MEM rd(8) == ID/EX rs
+branch: count:1, datah:29, dataf:1 n_dstall:28
+this is cycle:119,is_stall:1 - 0
+ADDI Instruction
+2data_f: count:0, dstall:28 datah:29, dataf:1 
+this is cycle:120,is_stall:0 - 0
+=22=======EX/MEM rd(8) == ID/EX rs
+branch: count:1, datah:30, dataf:1 n_dstall:29
+this is cycle:123,is_stall:1 - 0
+ADDI Instruction
+2data_f: count:0, dstall:29 datah:30, dataf:1 
+this is cycle:124,is_stall:0 - 0
+=22=======EX/MEM rd(8) == ID/EX rs
+branch: count:1, datah:31, dataf:1 n_dstall:30
+this is cycle:126,is_stall:1 - 0
+ADDI Instruction
+save:0, src1:0, src2:-1
+2data_f: count:0, dstall:30 datah:31, dataf:1 
+this is cycle:127,is_stall:0 - 0
+Number of Cycle : 126
+Number of Data Hazard : 31
+Number of Data Forwarding : 1
+Number of Stall by Data Hazard : 30
+Number of Stall by Branch (Jump) : 29
